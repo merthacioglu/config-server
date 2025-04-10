@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-config
+  labels:
+    app: polar-config
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: polar-config
+  template:
+    metadata:
+      labels:
+        app: polar-config
+    spec:
+      containers:
+        - name: polar-config
+          image: mhacioglu/config-server:0.1.1-SNAPSHOT
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command:  [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 8888
